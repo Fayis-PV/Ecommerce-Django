@@ -1,0 +1,83 @@
+<nav class="shadow navbar navbar-expand-lg bg-info text-primary position-sticky top-0 " style="z-index: 99999999999999999;">
+    <div class="container">
+      <a class="navbar-brand" href="/">ShoppingX</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <!-- <span class="navbar-toggler-icon" style="background-color: aqua;"></span> -->
+        <i class="fa-bars fa-solid text-light"></i>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active text-white" aria-current="page" href="/">Home</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-white" href="#" id="electronicsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Electronics
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="electronicsDropdown">
+              <li><a class="dropdown-item" href="">Mobile</a></li>
+              <li><a class="dropdown-item" href="#">Laptop</a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-white" href="#" id="fashionDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Fashion
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="fashionDropdown">
+              <li><a class="dropdown-item" href="#">Top Wear</a></li>
+              <li><a class="dropdown-item" href="#">Bottom Wear</a></li>
+            </ul>
+          </li>
+        </ul>
+        <form class="d-flex">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn border-light text-white" type="submit"><i class="fa-solid fa-search"></i></button>
+        </form>
+        <div>
+         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+           {% if user.is_authenticated %}
+           <li class="nav-item dropdown mx-2">
+             <a class="nav-link dropdown-toggle text-white" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+               {{user|capfirst}}
+             </a>
+             <ul class="dropdown-menu" aria-labelledby="profileDropdown">
+               <li><a class="dropdown-item" href="">Profile</a></li>
+               <li><a class="dropdown-item" href="">Orders</a></li>
+               <li><a class="dropdown-item" href="">Change Password</a></li>
+             </ul>
+           </li> 
+           <li class="nav-item mx-2" style="min-width: 60px;">
+             <a href="{% url 'alensso:cart' %}" class="nav-link text-white">Cart <span class="badge bg-danger">{{cart}}</span></a>
+            </li>
+            <li class="nav-item mx-2">
+             <a href="{% url 'alensso:logout' %}" class="nav-link text-white">Logout</a>
+            </li>
+            {% if user.is_staff %}
+            <li class="nav-item dropdown mx-2">
+             <a class="nav-link dropdown-toggle text-white" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+               Staff
+             </a>
+             <ul class="dropdown-menu" aria-labelledby="profileDropdown">
+               <li><a class="dropdown-item" href="{% url 'alensso:staff' %}">Staff Panel</a></li>
+               <li><a class="dropdown-item" href="{% url 'alensso:staffaddproduct' %}">Add Product</a></li>
+               <li><a class="dropdown-item" href="{% url 'alensso:staffaddcategory' %}">Add Category</a></li>
+                 
+             </ul>
+           </li>
+           {% endif %}
+           {% else %} 
+           <li class="nav-item mx-2">
+             <a href="{% url 'alensso:cart' %}" class="nav-link text-white"> Cart </a>
+            </li>
+            <li class="nav-item mx-2">
+             <a href="{% url 'alensso:login' %}" class="nav-link text-white">Login</a>
+            </li>
+            <li class="nav-item mx-2">
+             <a href="{% url 'alensso:signup' %}" class="nav-link text-white">Registration</a>
+            </li>
+           {% endif %}
+         </ul>
+        </div>
+      </div>
+    </div>
+   </nav>

@@ -1,0 +1,129 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block title %}Buy Now{% endblock title %}
+{% block main-content %}
+<div class="container">
+ <div class="row mt-5">
+  <div class="col-md-8 shadow p-3 mb-3">
+    <h4>Order Summary</h4>
+    <hr>
+      <div class="card mb-2 shadow-sm p-1">
+        <div class="card-body" style="height: 500px; overflow: auto;">
+          {% if user.is_authenticated %}
+     <h4>Cart</h4><hr>
+     {% for product in products  %}
+    <div class="row">
+      <div class="col-sm-3 text-center align-self-center"><img src="{{product.product.pics.url}}" alt="" srcset="" class="img-fluid img-thumbnail shadow-sm" height="150" width="150"> </div>
+      <div class="col-sm-9">
+       <div>
+        <h5>{{product.product}}</h5>
+        <p class="mb-2 text-muted small">Description: {{product.bio}}</p>
+        <div class="my-3">
+         <label for="quantity">Quantity:</label>
+         <a class="minus-cart btn"><i class="fas fa-minus-square fa-lg"></i></a>
+           <span id="quantity">{{product.quantity}}</span>
+         <a class="plus-cart btn"><i class="fas fa-plus-square fa-lg"></i></a>
+        </div> 
+        <div class="d-flex justify-content-between">
+         <a href="#" class="btn btn-sm btn-secondary mr-3">Remove item </a>
+         <p class="mb-0"><span><strong>Rs. {{product.product.price}}.00</strong></span></p>
+        </div>
+       </div>
+      </div>
+     </div>
+     <hr class="text-muted">
+    {% empty %}
+    <br>
+    <div class="row">
+      <div class="col-sm-12 text-center align-self-center py-5">
+        <h3>Your Cart is Empty</h3> <br>
+        <a href="{% url 'alensso:home' %}" class="btn btn-success">Continue Shopping</a>
+      </div>
+     </div>
+    {% endfor %}
+    {% else %}
+    <div class="row">
+      <div class="col-sm-12 text-center align-self-center py-5">
+        <h3>Please Login for your Cart</h3> <br>
+        <a href="{% url 'alensso:login' %}" class="btn btn-info">Login</a>
+      </div>
+     </div>
+    {% endif %}
+        </div>
+      </div>
+    <small>Term and Condition: Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia, ullam saepe! Iure optio repellat dolor velit, minus rem. Facilis cumque neque numquam laboriosam, accusantium adipisci nisi nihil in et quis?</small>
+  </div>
+  <div class="col-md-4 ">
+    <div class="card my-3 offset-sm shadow">
+      <div class="card-body">
+        <h4>The Total Amount</h4><hr>
+        <ul class="list-group">
+         <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">Amount<span>Rs. {{full_amount}}.00</span></li>
+         <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0">Shipping<span>Rs. 70.00</span></li><hr>
+         <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
+          <div>
+             <strong>Total</strong> <small>(including VAT)</small>
+           </div>
+           <span><strong>Rs. {{total_amount}}.00</strong></span>
+         </li>
+        </ul>
+        <div class="d-grid"><button id="pay-btn" class="btn btn-primary">Place Order</button></div>
+      </div>
+     </div>
+  <div class="offset-sm-1 shadow p-3 m-0 w-100 card">
+    <h4>Select Shipping Address</h4>
+    <hr>
+    <form action="">
+      <div class="card">
+        <div class="card-body">
+        <h5>Sonam Kumari</h5>
+        <p>Hirapur Dhanbad Jharkahndhuguygu</p>
+        </div>
+      </div>
+        <div class="form-check mt-2 mb-5 ">
+          <input class="form-check-input" type="radio" value="">
+          <label class="form-check-label fw-bold" for="">
+            Address: 1 </label>
+        </div>
+        <div class="text-end">
+          <button type="submit" class="btn btn-warning mt-3 px-5 fw-bold">Continue</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+</div>
+{% endblock main-content %}
+{% block script_tags %}
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+	var options = {
+	
+	// Enter the Key ID generated from the Dashboard
+	key: "{{ razorpay_merchant_key }}",
+	
+	// Amount is in currency subunits.
+	// Default currency is INR. Hence,
+	// 50000 refers to 50000 paise
+	amount: "{{ razorpay_amount }}",
+	currency: "{{ currency }}",
+	
+	// Your/store name.
+	name: "Dj Razorpay",
+	
+	// Pass the `id` obtained in the response of Step 1
+	order_id: "{{ razorpay_order_id }}",
+	callback_url: "{{ callback_url }}",
+	};
+	
+	// initialise razorpay with the options.
+	var rzp1 = new Razorpay(options);
+	
+	// add event listener to the payment button.
+  
+	document.getElementById("pay-btn").addEventListener('click', function (e) {
+	rzp1.open();
+	e.preventDefault();
+	});
+</script>
+{% endblock script_tags %}

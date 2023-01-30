@@ -1,0 +1,42 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block title %}Login{% endblock title %}
+{% block main-content %}
+<div class="container">
+ <div class="row my-3">
+  <div class="col-sm-6 offset-sm-3">
+   <h3>Add Category</h3>
+   <hr>
+   {% include "app/messages.html" %}
+   <form action="" method="post" enctype='multipart/form-data' novalidate class="shadow p-5">
+    {% csrf_token %}
+      {% for field in form %}
+         <div class="form-group mb-3">
+            {{field.label}}
+            {{field}}
+            <small class="text-danger">{{field.errors|striptags}}</small>
+         </div>
+      {% endfor %}
+    <input type="submit" class="btn btn-primary mt-4" value="Add Category">
+    <br>
+   </form>
+   <br>
+  </div>
+ </div>
+ <br><br>
+ <h3>All Categories</h3><hr>
+ <div class="grid row row-cols-1 row-cols-sm-2 row-cols-md-4 ">
+   
+   {% for category in  categories %}
+   <div class="p-1" style="max-width: 400px;">
+      <div class="card p-1 px-2">
+         <img src="{{category.img.url}}" alt="" class="card-img-top">
+         <div class="card-body">
+            <div class="card-title h6 m-auto">{{category}}</div>
+         </div>
+      </div>
+   </div>
+   {% endfor %}
+</div>
+</div>
+{% endblock main-content %}

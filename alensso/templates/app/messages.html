@@ -1,0 +1,10 @@
+
+{% comment %}
+{% if messages %}
+{% for message in messages %}
+  <div class="card shadow p-3 bg-{% if message.tags == 'error'%}danger{% elif message.tags %}{{message.tags}}{% else %}danger{% endif %} text-light">
+    {{message}}
+  </div><br>
+{% endfor %}
+{% endif %}
+{% endcomment %}
